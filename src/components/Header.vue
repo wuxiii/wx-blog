@@ -4,14 +4,17 @@
     style="background-image: linear-gradient(120deg, rgb(38, 144, 249), rgb(252, 45, 45)); color: rgb(255, 255, 255);"
   >
     <div style="position: absolute; top: 20px; right: 20px; z-index: 2;">
-      <button
-        type="button"
-        class="el-button el-tooltip el-button--default is-circle"
-        aria-describedby="el-tooltip-8989"
-        tabindex="0"
+      <el-tooltip
+        effect="dark"
+        :content="fullButton.full ? '退出' : '全屏'"
+        placement="bottom-end"
       >
-        <i class="el-icon-rank"></i>
-      </button>
+        <el-button
+          @click="full"
+          :icon="fullButton.full ? 'el-icon-close' : 'el-icon-rank'"
+          circle
+        ></el-button>
+      </el-tooltip>
     </div>
     <div
       v-for="(item, index) in randomIcon"
@@ -31,9 +34,7 @@
 
     <h1 class="project-name">{{ profile.nickName }}</h1>
     <h2 class="project-tagline">{{ profile.bio }}</h2>
-    <a href="https://github.com/wuxiii" target="_blank" class="btn"
-      >GitHub主页</a
-    >
+    <a :href="profile.github_url" target="_blank" class="btn">GitHub主页</a>
     <!-- <a href="https://github.com/GitHub-Laziji/vblog" target="_blank" class="btn"
       >博客源码</a
     > -->
@@ -51,6 +52,7 @@ export default {
         return {
           nickName: "wixi",
           bio: "coding the world",
+          github_url: "www.baidu.com",
         };
       },
     },
@@ -58,17 +60,21 @@ export default {
   data() {
     return {
       randomIcon: [],
+      fullButton: {
+        full: false,
+      },
     };
   },
+
   methods: {
-    randomInt(s, e) {
-      let d = e - s;
-      if (d < 0) {
-        return s;
+    full() {
+      if (!this.fullButton.full) {
+        this.$util.fullScreen();
+        this.fullButton.full = true;
+      } else {
+        this.$util.fullExit();
+        this.fullButton.full = false;
       }
-      let r = Math.random() * d + s;
-      r = parseInt(r, 10);
-      return r;
     },
   },
   mounted() {

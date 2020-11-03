@@ -29,8 +29,8 @@
                 >其他网站</template
               >
               <el-menu-item
-                :index="'#webSites-' + index"
                 v-for="(item, index) in webSites"
+                :index="'#webSites-' + index"
                 :key="'#webSites' + index"
                 >{{ item.name }}</el-menu-item
               >
@@ -170,15 +170,84 @@ export default {
     webSites: {
       type: Array,
       default: function() {
-        return [{ name: "segmentfault" }];
+        return [{ name: "segmentfault", url: "http:/...." }];
       },
     },
+    location: String,
+    name: String,
+    audioAutoPlay: String,
+    audioUrl: String,
+    avatarUrl: String,
+    githubUsername: String,
+    githubUrl: String,
+  },
+  mounted() {
+    this.$nextTick(() => {
+      setInterval(this.listenMusic, 1000);
+    });
   },
   methods: {
-    selectTopbar() {},
-    play() {},
-    changeVolume() {},
-    listenMusic() {},
+    selectTopbar(index) {
+      console.log(index);
+      //取消菜单选中状态
+      this.topbar.active = this.topbar.active == "" ? " " : "";
+      switch (index) {
+        case "#githubHome":
+          window.open(this.githubUrl);
+          break;
+        case "#blog":
+          if (this.blog) {
+            window.open();
+          } else {
+            this.$message({
+              message: "博主没有其他博客",
+              type: "info",
+            });
+          }
+          break;
+        default:
+          if (/#webSites-\d+/.test(index)) {
+            let i = parseInt(index.split("-")[1]);
+            let url = this.webSites[i].url;
+            window.open((url.match(/https?:\/\//i) ? "" : "https://") + url);
+          }
+          break;
+      }
+    },
+    listenMusic() {
+      if (!this.$refs.music) {
+        return;
+      }
+      if (this.$refs.music.readyState) {
+        this.music.maxTime = this.$refs.music.duration;
+      }
+      this.music.isPlay = !this.$refs.music.paused;
+      this.music.currentTime = this.$refs.music.currentTime;
+    },
+    play() {
+      if (this.$refs.music.paused) {
+        this.$refs.music.play();
+      } else {
+        this.$refs.music.pause();
+      }
+      this.music.isPlay = !this.$refs.music.paused;
+      this.$nextTick(() => {
+        document.getElementById("play").blur();
+      });
+    },
+    changeTime(time) {
+      this.$refs.music.currentTime = time;
+    },
+    changeVolume(v) {
+      this.music.volume += v;
+      if (this.music.volume > 100) {
+        this.music.volume = 100;
+      }
+      if (this.music.volume < 0) {
+        this.music.volume = 0;
+      }
+      this.$refs.music.volume = this.music.volume / 100;
+    },
   },
 };
 </script>
