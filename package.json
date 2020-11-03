@@ -1,0 +1,13 @@
+{
+  "name": "wx-blog",
+  "private": true,
+  "scripts": {
+    "build": "gridsome build",
+    "develop": "gridsome develop",
+    "explore": "gridsome explore"
+  },
+  "dependencies": {
+    "element-ui": "^2.14.0",
+    "gridsome": "^0.7.0"
+  }
+}
