@@ -97,7 +97,7 @@
             </el-col>
           </el-row>
 
-          <audio ref="music" loop autoplay v-if="audioAutoPlay">
+          <audio ref="music" loop autoplay v-if="audioAutoPlay === '1'">
             <source :src="audioUrl" type="audio/mpeg" />
           </audio>
           <audio ref="music" loop v-else>
@@ -156,7 +156,7 @@ export default {
         isPlay: false,
         currentTime: 0,
         maxTime: 0,
-        volume: 100,
+        volume: 30,
       },
       //   fullButton: {
       //     full: false,

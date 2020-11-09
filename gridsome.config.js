@@ -5,12 +5,12 @@
 // To restart press CTRL + C in terminal and run `gridsome develop`
 
 module.exports = {
-  siteName: "Gridsome",
+  siteName: "wixi blogs",
   plugins: [
     {
       use: "@gridsome/source-strapi",
       options: {
-        apiURL: "http://localhost:1337",
+        apiURL: "http://47.116.134.161:1337/",
         queryLimit: 1000, // Defaults to 100
         contentTypes: ["aricles"],
         singleTypes: ["Configuration"],
@@ -21,4 +21,12 @@ module.exports = {
       },
     },
   ],
+  templates: {
+    StrapiAricles: [
+      {
+        path: "/blog/:id",
+        component: "./src/templates/Blog.vue",
+      },
+    ],
+  },
 };
